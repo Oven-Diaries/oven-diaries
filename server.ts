@@ -15,6 +15,63 @@ async function startServer() {
   // Parse JSON bodies (as sent by API clients)
   app.use(express.json());
 
+  // API Route to fetch Google Reviews
+  app.get("/api/reviews", async (req, res) => {
+    try {
+      const apiKey = process.env.GOOGLE_PLACES_API_KEY;
+      
+      if (!apiKey) {
+        return res.status(500).json({ error: "Missing GOOGLE_PLACES_API_KEY" });
+      }
+
+      // First, find the Place ID for Oven Diaries Eluru
+      const findPlaceUrl = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=Oven%20Diaries%20Eluru&inputtype=textquery&fields=place_id&key=${apiKey}`;
+      const findPlaceResponse = await fetch(findPlaceUrl);
+      const findPlaceData = await findPlaceResponse.json();
+
+      if (findPlaceData.error_message) {
+        return res.status(400).json({ error: `Google API Error: ${findPlaceData.error_message}` });
+      }
+
+      if (!findPlaceData.candidates || findPlaceData.candidates.length === 0) {
+        return res.status(404).json({ error: "Place not found" });
+      }
+
+      const placeId = findPlaceData.candidates[0].place_id;
+
+      // Now fetch the details including reviews
+      const detailsUrl = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=name,rating,user_ratings_total,reviews&key=${apiKey}`;
+      const detailsResponse = await fetch(detailsUrl);
+      const detailsData = await detailsResponse.json();
+
+      if (!detailsData.result) {
+        return res.status(404).json({ error: "Place details not found" });
+      }
+
+      const { rating, user_ratings_total, reviews } = detailsData.result;
+
+      // Get highest 4 reviews
+      let topReviews = [];
+      if (reviews && reviews.length > 0) {
+        // Find 5 star reviews
+        const highestReviews = reviews.filter(r => r.rating === 5).sort((a, b) => b.text.length - a.text.length);
+        const fourStarReviews = reviews.filter(r => r.rating === 4).sort((a, b) => b.text.length - a.text.length);
+        
+        topReviews = [...highestReviews, ...fourStarReviews].slice(0, 4);
+      }
+
+      res.json({
+        rating,
+        totalReviews: user_ratings_total,
+        reviews: topReviews
+      });
+
+    } catch (error) {
+      console.error("Error fetching Google Reviews:", error);
+      res.status(500).json({ error: "Failed to fetch reviews" });
+    }
+  });
+
   // API Route for sending contact emails
   app.post("/api/contact", async (req, res) => {
     try {
