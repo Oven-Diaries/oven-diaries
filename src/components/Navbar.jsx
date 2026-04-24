@@ -44,11 +44,7 @@ export default function Navbar() {
   ];
 
   return (
-    <nav
-    className={`fixed w-full h-16 z-50 ${
-      scrolled ? 'bg-[#1c2070]/20 backdrop-blur-md shadow-lg' : ''
-    } flex items-center`}
-  >
+    <nav className='fixed w-full h-16 z-50 bg-[#1c2070]/20 backdrop-blur-md shadow-lg flex items-center'>
       <div className="w-full max-w-7xl mx-auto px-4 sm:px-10">
         <div className="flex justify-between items-center w-full">
           <div className="flex-shrink-0">
