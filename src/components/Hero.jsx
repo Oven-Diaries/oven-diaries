@@ -2,7 +2,7 @@ import { motion } from 'motion/react';
 
 export default function Hero() {
   return (
-    <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
+    <section id="home" className="w-full h-screen flex items-center justify-center overflow-hidden">
       {/* Background Image with Dark Blue Gradient Overlay */}
       <div 
         className="absolute inset-0 z-0 bg-cover bg-center bg-no-repeat"

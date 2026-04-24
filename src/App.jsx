@@ -23,7 +23,7 @@ export default function App() {
   }, [loading]);
 
   return (
-    <div className="min-h-screen bg-[#1c2070] text-white selection:bg-[#b8a35e] selection:text-white">
+    <div className="min-h-screen w-full bg-[#1c2070] text-white selection:bg-[#b8a35e] selection:text-white">
       <AnimatePresence>
         {loading && <SplashScreen onFinish={() => setLoading(false)} />}
       </AnimatePresence>
