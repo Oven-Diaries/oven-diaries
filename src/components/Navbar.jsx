@@ -45,7 +45,7 @@ export default function Navbar() {
 
   return (
     <nav
-      className={`fixed top-3 left-1/2 -translate-x-1/2 w-[95%] h-16 rounded-full z-50 transition-all duration-300 ${
+      className={`fixed top-3 mx-auto w-[95%] h-16 rounded-full z-50 transition-all duration-300 ${
         scrolled ? 'bg-[#1c2070]/20 backdrop-blur-md shadow-lg' : ''
       } flex items-center`}
     >
