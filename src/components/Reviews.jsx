@@ -15,49 +15,79 @@ export default function Reviews() {
 
   useEffect(() => {
     const fetchReviews = async () => {
-      // Fallback to exactly user specified stats in case of API error
-      setRating(4.6);
-      setTotalReviews(77);
-      setReviewsData([
-        {
-          author: "teja kumar Tananki",
-          rating: 5,
-          text: "Awesome food and beautiful environment. We loved everything.",
-          time: "2 months ago",
-          initials: "TK",
-          color: "bg-blue-600",
-          review: "Food: 5/5  |  Service: 5/5  |  Atmosphere: 5/5"
-        },
-        {
-          author: "Sandeep Malineni",
-          rating: 5,
-          text: "Tiramisu...melting in the mouth",
-          time: "3 months ago",
-          initials: "SM",
-          color: "bg-green-600",
-          review: "Food: 5/5  |  Service: 5/5  |  Atmosphere: 5/5"
-        },
-        {
-          author: "Pavan kalyan",
-          rating: 5,
-          text: "I recently ordered the Lotus Biscoff cake, and I must say, the presentation was exceptionally impressive—truly a feast for the eyes. The taste surpassed my expectations, offering a delightful richness and perfectly balanced flavors. Overall, it was an outstanding experience that I would highly recommend to others.",
-          time: "5 months ago",
-          initials: "PK",
-          color: "bg-pink-600",
-          review: "Food: 5/5  |  Service: 5/5  |  Atmosphere: 5/5"
-        },
-        {
-          author: "Ajay Kumar Moparthi",
-          rating: 5,
-          text: "Good maintenance and beautiful ambience. Group size: Suitable for all group sizes. Wait time: Up to 10 min. Recommendation for vegetarians. Highly recommended vegetarian offerings and Large vegetarian selection",
-          time: "7 months ago",
-          initials: "PK",
-          color: "bg-pink-600",
-          review: "Food: 5/5  |  Service: 5/5  |  Atmosphere: 5/5"
+      try {
+        const response = await fetch('/api/reviews');
+        if (!response.ok) {
+          const errData = await response.json();
+          throw new Error(errData.error || 'Failed to fetch reviews');
         }
-      ]);
-      setLoading(false);
+        const data = await response.json();
+        
+        if (data.rating) setRating(data.rating);
+        if (data.totalReviews) setTotalReviews(data.totalReviews);
+        if (data.reviews && data.reviews.length > 0) {
+          setReviewsData(data.reviews.map((r, i) => ({
+            author: r.author_name,
+            rating: r.rating,
+            text: r.text,
+            time: r.relative_time_description,
+            initials: r.author_name.charAt(0).toUpperCase(),
+            color: colors[i % colors.length]
+          })));
+        } else {
+          throw new Error('No reviews returned');
+        }
+        setLoading(false);
+      } catch (err) {
+        // Provide a clearer console message without making it look like a crash
+        console.log("Note: Displaying preview reviews because the Google Places API call was unsuccessful.");
+        console.log("Reason:", err.message);
+        
+        // Fallback to exactly user specified stats in case of API error
+        setRating(4.6);
+        setTotalReviews(77);
+        setReviewsData([
+          {
+            author: "teja kumar Tananki",
+            rating: 5,
+            text: "Awesome food and beautiful environment. We loved everything.",
+            time: "2 months ago",
+            initials: "TK",
+            color: "bg-blue-600",
+            review: "Food: 5/5  |  Service: 5/5  |  Atmosphere: 5/5"
+          },
+          {
+            author: "Sandeep Malineni",
+            rating: 5,
+            text: "Tiramisu...melting in the mouth",
+            time: "3 months ago",
+            initials: "SM",
+            color: "bg-orange-600",
+            review: "Food: 5/5  |  Service: 5/5  |  Atmosphere: 5/5"
+          },
+          {
+            author: "Pavan kalyan",
+            rating: 5,
+            text: "I recently ordered the Lotus Biscoff cake, and I must say, the presentation was exceptionally impressive—truly a feast for the eyes. The taste surpassed my expectations, offering a delightful richness and perfectly balanced flavors. Overall, it was an outstanding experience that I would highly recommend to others.",
+            time: "5 months ago",
+            initials: "PK",
+            color: "bg-pink-600",
+            review: "Food: 5/5  |  Service: 5/5  |  Atmosphere: 5/5"
+          },
+          {
+            author: "Ajay Kumar Moparthi",
+            rating: 5,
+            text: "Good maintenance and beautiful ambience. Group size: Suitable for all group sizes. Wait time: Up to 10 min. Recommendation for vegetarians. Highly recommended vegetarian offerings and Large vegetarian selection",
+            time: "7 months ago",
+            initials: "PK",
+            color: "bg-purple-600",
+            review: "Food: 5/5  |  Service: 5/5  |  Atmosphere: 5/5"
+          }
+        ]);
+        setLoading(false);
+      }
     };
+
     fetchReviews();
   }, []);
 
