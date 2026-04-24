@@ -1,20 +1,60 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 🍰 Oven Diaries Website
 
-# Run and deploy your AI Studio app
+A modern, responsive bakery website built for Oven Diaries, Eluru.  
+This project delivers a premium UI/UX experience with strong focus on branding, performance, and cross-device responsiveness.
 
-This contains everything you need to run your app locally.
+---
 
-View your app in AI Studio: https://ai.studio/apps/7029bc16-37c0-421b-afac-f69776d8d6b1
+## 🚀 Live Demo  
+👉 https://oven-diaries.netlify.app
 
-## Run Locally
+---
 
-**Prerequisites:**  Node.js
+## 📌 Features
+
+- 📖 Menu Section – Clean and structured display of bakery items  
+- 🖼️ Gallery – Visual showcase of cakes, pastries, and products  
+- ⭐ Google Reviews Integration – Displays real customer feedback  
+- 📩 Contact Form – Functional email service using Nodemailer (configurable)  
+- 📱 Fully Responsive – Optimized for mobile, tablet, and desktop  
+- 🎨 Brand-Aligned UI – Matches the bakery’s logo colors and theme  
+- ⚡ Fast Performance – Lightweight and optimized  
+
+---
+
+## 🛠️ Tech Stack
+
+- Frontend: React.js (JSX)  
+- Styling: Tailwind CSS  
+- Email Service: Nodemailer  
+- Deployment: Netlify  
+
+---
+
+## 📂 Project Structure
+/src
+/components
+/pages
+/assets
+/styles
+/public
+package.json
+README.md
 
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+---
+
+## ⚙️ Setup & Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/your-username/oven-diaries.git
+
+# Navigate into the project
+cd oven-diaries
+
+# Install dependencies
+npm install
+
+# Start development server
+npm run dev
